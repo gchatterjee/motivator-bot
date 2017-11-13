@@ -1,0 +1,8 @@
+{
+    "name": "jeans-motivator-bot",
+    "version": "1.0.0",
+    "description": "a bot to motivate Jeans",
+    "main": "bot.js",
+    "author": "Gaurav Chatterjee",
+    "dependencies": {}
+}
