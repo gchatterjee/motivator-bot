@@ -1,8 +1,10 @@
 {
-    "name": "jeans-motivator-bot",
-    "version": "1.0.0",
-    "description": "a bot to motivate Jeans",
-    "main": "bot.js",
-    "author": "Gaurav Chatterjee",
-    "dependencies": {}
+  "name": "jeans-motivator-bot",
+  "version": "1.0.0",
+  "description": "a bot to motivate Jeans",
+  "main": "bot.js",
+  "author": "Gaurav Chatterjee",
+  "dependencies": {
+    "discord.io": "^2.5.3"
+  }
 }
