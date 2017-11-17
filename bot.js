@@ -1,33 +1,37 @@
-var Discord = require('discord.io');
 var auth = require('./auth.json');
+// Import the discord.js module
+const Discord = require('discord.js');
 
-// Initialize Discord Bot
-var bot = new Discord.Client({
-   token: auth.token,
-   autorun: true
-});
-bot.on('ready', function (evt) {
-    console.log('Connected')
-    console.log('Logged in as: ');
-    console.log(bot.username + ' - (' + bot.id + ')');
-});
-bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
+// Create an instance of a Discord client
+const client = new Discord.Client();
 
-        args = args.splice(1);
-        switch(cmd) {
-            // !ping
-            case 'ping':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Pong!'
-                });
-            break;
-            // Just add any case commands if you want to..
-         }
-     }
+// The token of your bot - https://discordapp.com/developers/applications/me
+const token = auth.token
+
+// constants
+const jeansId = '157610741858304000';
+const botId = '379491763414368261';
+
+// helper functions
+function isJeans(user) {
+    return (user.id === jeansId);
+}
+
+// main
+client.on('ready', () => {
+  console.log('I am ready!');
 });
+
+// Create an event listener for messages
+client.on('message', message => {
+    console.log(message.content);
+    if ((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
+        (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
+    message.channel.send('Fuck you too!');
+    }
+    if (isJeans(message.author)) {
+    }
+});
+
+// Log our bot in
+client.login(token);
