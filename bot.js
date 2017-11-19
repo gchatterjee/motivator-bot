@@ -13,7 +13,10 @@ const jeansId = '157610741858304000';
 const botId = '379491763414368261';
 const jobsId = '364834807043063819';
 const gamesId = '';
+
 var jeans = null;
+var jobsChannel = null;
+var gamesChannel = null;
 
 var despairRegexes = [];
 
@@ -55,6 +58,14 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
     // console.log(message.content);
+
+    if (jobsChannel === null && message.channel.id === jobsId) {
+        jobsChannel = message.channel;
+    }
+    if (gamesChannel === null && message.channel.id === gamesId) {
+        gamesChannel = message.channel;
+    }
+
     if ((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
         (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
         console.log(message.author.username + ': ' + message.content);
@@ -78,11 +89,12 @@ client.on('message', message => {
 });
 
 client.on('presenceUpdate', update => {
-    if(isJeans(update.newMember) && jeans.presence.game !== null) {
-        var channels = getChannels(update.newMember.guild, [jobsId, gamesId]);
+    if(isJeans(update.user) && jeans.presence.game !== null) {
         console.log('me: Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
-        for (channel of channels) {
-            channel.send('Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
+        for (channel of [gamesChannel, jobsChannel]) {
+            if (channel !== null) {
+                channel.send('Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
+            }
         }
     }
 })
