@@ -89,11 +89,14 @@ client.on('message', message => {
 });
 
 client.on('presenceUpdate', update => {
-    if(isJeans(update.user) && jeans.presence.game !== null) {
-        console.log('me: Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
-        for (channel of [gamesChannel, jobsChannel]) {
-            if (channel !== null) {
-                channel.send('Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
+    if(isJeans(update.user)) {
+        if (jeans === null) { jeans = update.user; }
+        if (jeans.presence.game !== null) {
+            console.log('me: Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
+            for (channel of [gamesChannel, jobsChannel]) {
+                if (channel !== null) {
+                    channel.send('Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
+                }
             }
         }
     }
