@@ -1,21 +1,18 @@
 {
     "phrases" : [
-        "fml+",
-        "fmel",
-        "f m l",
-        "fk+",
-        "f+u+c+k+",
-        "f+o+o+k+",
-        "rip+",
-        "ree+",
-        "rage+",
-        "feelsbadman",
-        "notlikethis",
-        "biblethump",
-        "wutface",
-        "too hard",
-        "i'm lazy",
-        "im lazy",
-        "too lazy"
+        "\\bfml+\\b",
+        "\\bfmel\\b",
+        "\\bf m l\\b",
+        "\\bf+k+i{0,}n{0,}g{0,}\\b",
+        "\\bf+u+c+k+i{0,}n{0,}g{0,}\\b",
+        "\\bf+o+o+k+i{0,}n{0,}g{0,}\\b",
+        "\\brip+\\b",
+        "\\bree+\\b",
+        "\\br+a+g+e+\\b",
+        "\\bfeelsbadman\\b",
+        "\\bnotlikethis\\b",
+        "\\bbiblethump\\b",
+        "\\bwutface\\b",
+        "\\btoo hard\\b"
     ]
 }

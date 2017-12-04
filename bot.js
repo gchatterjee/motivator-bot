@@ -14,6 +14,8 @@ const botId = '379491763414368261';
 const jobsId = '364834807043063819';
 const gamesId = '';
 
+const generalize = true; // generalizes bot to not be only for Jeans
+
 var jeans = null;
 var jobsChannel = null;
 var gamesChannel = null;
@@ -72,18 +74,16 @@ client.on('message', message => {
         console.log('me: Fuck you too, <@' + message.author.id + '>!')
         message.channel.send('Fuck you too, <@' + message.author.id + '>!');
     }
-    else if (isJeans(message.author)) {
+    else if (isJeans(message.author) || generalize) {
         if (jeans === null) { jeans = message.author; }
         let despairFlag = false;
         for(exp of despairRegexes) {
-            if(exp.test(message.content.toLowerCase())) { despairFlag = true; }
-        }
-        if (despairFlag) {
-            console.log(message.author.username + ': ' + message.content);
-            console.log('me: Hi <@' + jeansId + '>. I sense that you are in despair.')
-            message.channel.send('Hi <@' + jeansId + '>. I sense that you are in despair.')
-        } else {
-
+            if(exp.test(message.content.toLowerCase())) {
+                console.log(message.author.username + ': ' + message.content);
+                console.log('me: Hi <@' + message.author.id + '>. I sense that you are in despair.');
+                message.channel.send('Hi <@' + message.author.id + '>. I sense that you are in despair.');
+                break;
+            }
         }
     }
 });
