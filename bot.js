@@ -9,30 +9,23 @@ const client = new Discord.Client();
 const token = auth.token
 
 // constants
-const jeansId = '157610741858304000';
 const botId = '379491763414368261';
 const jobsId = '364834807043063819';
-const gamesId = '';
+const gamesId = '364835892755562496';
+const logId = '380542106650804225';
 
-const generalize = true; // generalizes bot to not be only for Jeans
-
-var jeans = null;
 var jobsChannel = null;
 var gamesChannel = null;
+var logChannel = null;
 
 var despairRegexes = [];
-
-// helper functions
-function isJeans(user) {
-    return (user.id === jeansId);
-}
 
 function isBot(user) {
     return (user.id === botId);
 }
 
 function loadDespairPhrases() {
-    const despairPhrases = require('./jeans-despair.json');
+    const despairPhrases = require('./despair.json');
     var despairRegexes = []
     for(let phrase of despairPhrases.phrases) {
         despairRegexes.push(new RegExp(phrase));
@@ -51,37 +44,50 @@ function getChannels(guild, idList) {
     return channels;
 }
 
+function log(message) {
+    if (logChannel === null) {
+        console.log(message);
+    } else {
+        logChannel.send(message);
+    }
+}
+
 // main
 client.on('ready', () => {
-  console.log('Successfully connected.');
+  log('Successfully connected.');
   despairRegexes = loadDespairPhrases();
 });
 
 // Create an event listener for messages
 client.on('message', message => {
-    // console.log(message.content);
+    // log(message.content);
 
-    if (jobsChannel === null && message.channel.id === jobsId) {
+    if(jobsChannel === null && message.channel.id === jobsId) {
         jobsChannel = message.channel;
     }
-    if (gamesChannel === null && message.channel.id === gamesId) {
+    if(gamesChannel === null && message.channel.id === gamesId) {
         gamesChannel = message.channel;
     }
-
-    if ((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
-        (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
-        console.log(message.author.username + ': ' + message.content);
-        console.log('me: Fuck you too, <@' + message.author.id + '>!')
-        message.channel.send('Fuck you too, <@' + message.author.id + '>!');
+    if(logChannel === null && message.channel.id === logId) {
+        logChannel = message.channel;
+        log('Log initialization successful. Log will now be displayed in this channel instead of locally on console.');
     }
-    else if (isJeans(message.author) || generalize) {
-        if (jeans === null) { jeans = message.author; }
+
+    if((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
+       (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
+        log(message.author.username + ': ' + message.content);
+        const response = 'Fuck you too, <@' + message.author.id + '>!'
+        log('me: ' + response)
+        message.channel.send(response);
+    }
+    else {
         let despairFlag = false;
         for(exp of despairRegexes) {
             if(exp.test(message.content.toLowerCase())) {
-                console.log(message.author.username + ': ' + message.content);
-                console.log('me: Hi <@' + message.author.id + '>. I sense that you are in despair.');
-                message.channel.send('Hi <@' + message.author.id + '>. I sense that you are in despair.');
+                log(message.author.username + ': ' + message.content);
+                const response = 'Hi <@' + message.author.id + '>. I sense that you are in despair.'
+                log('me: ' + response);
+                message.channel.send(response);
                 break;
             }
         }
@@ -89,14 +95,12 @@ client.on('message', message => {
 });
 
 client.on('presenceUpdate', update => {
-    if(isJeans(update.user)) {
-        if (jeans === null) { jeans = update.user; }
-        if (jeans.presence.game !== null) {
-            console.log('me: Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
-            for (channel of [gamesChannel, jobsChannel]) {
-                if (channel !== null) {
-                    channel.send('Stop playing ' + jeans.presence.game.name + ', <@' + jeansId + '>! Apply to some <#' + jobsId + '>!');
-                }
+    if (update.user !== null) {
+        const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.userId + '>! Apply to some <#' + jobsId + '>!';
+        log('me: ' + response);
+        for (channel of [gamesChannel, jobsChannel]) {
+            if (channel !== null) {
+                channel.send(response);
             }
         }
     }
