@@ -1,1 +1,1 @@
-# jeans-motivator-bot
+# Motivator Bot
