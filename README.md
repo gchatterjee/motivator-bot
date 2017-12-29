@@ -1,1 +1,3 @@
-# jeans-motivator-bot
+# Motivator Bot
+
+This bot was designed for CMU CEE cluster.
