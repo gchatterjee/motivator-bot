@@ -14,11 +14,11 @@ const jobsId = '364834807043063819';
 const gamesId = '364835892755562496';
 const logId = '380542106650804225';
 
-var jobsChannel = null;
-var gamesChannel = null;
-var logChannel = null;
+const trackedChannelIds = [jobsId, gamesId, logId];
 
+var channels = [];
 var despairRegexes = [];
+var loggingSetup = false;
 
 function isBot(user) {
     return (user.id === botId);
@@ -36,19 +36,28 @@ function loadDespairPhrases() {
 function getChannels(guild, idList) {
     let channels = [];
     for(id of idList) {
-        let chan = guild.channels.get(id);
-        if(chan !== undefined && chan !== null) {
-            channels.push(chan);
+        let channel = guild.channels.get(id);
+        if(channel !== undefined && channel !== null) {
+            channels.push({'id':id, 'channel':channel});
         }
     }
     return channels;
 }
 
+function getChannel(id) {
+    for(channel of channels) {
+        if(channel.id === id) {
+            return channel.channel;
+        }
+    }
+    return null;
+}
+
 function log(message) {
-    if (logChannel === null) {
-        console.log(message);
-    } else {
-        logChannel.send(message);
+    console.log(message);
+    const logChannel = getChannel(logId);
+    if (logChannel !== null) {
+        logChannel.send(message.replace('@', ''));
     }
 }
 
@@ -60,18 +69,18 @@ client.on('ready', () => {
 
 // Create an event listener for messages
 client.on('message', message => {
-    // log(message.content);
 
-    if(jobsChannel === null && message.channel.id === jobsId) {
-        jobsChannel = message.channel;
+    if(message.content = 'rename') {
+        client.user.setUsername('Motivator Bot');
     }
-    if(gamesChannel === null && message.channel.id === gamesId) {
-        gamesChannel = message.channel;
+
+    var logMessage = (getChannel(logId) === null);
+    channels = getChannels(message.guild, trackedChannelIds);
+    if(logMessage && getChannel(logId) !== null) {
+        log('Logging initialization successful. Logging will be recorded in both local console and logging channel.')
     }
-    if(logChannel === null && message.channel.id === logId) {
-        logChannel = message.channel;
-        log('Log initialization successful. Log will now be displayed in this channel instead of locally on console.');
-    }
+
+    if(message.author.id === botId) { return; }
 
     if((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
        (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
@@ -96,11 +105,13 @@ client.on('message', message => {
 
 client.on('presenceUpdate', update => {
     if (update.user !== null) {
-        const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.userId + '>! Apply to some <#' + jobsId + '>!';
-        log('me: ' + response);
-        for (channel of [gamesChannel, jobsChannel]) {
-            if (channel !== null) {
-                channel.send(response);
+        if(update.user.presence.game !== null) {
+            const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.userId + '>! Apply to some <#' + jobsId + '>!';
+            log('me: ' + response);
+            for (channel of [getChannel(gamesId), getChannel(jobsId)]) {
+                if (channel !== null) {
+                    channel.send(response);
+                }
             }
         }
     }
