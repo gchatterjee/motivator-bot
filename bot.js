@@ -16,6 +16,8 @@ const logId = '380542106650804225';
 
 const trackedChannelIds = [jobsId, gamesId, logId];
 
+const addDespairTrigger = 'motivator-bot -d ';
+
 var channels = [];
 var despairRegexes = [];
 var loggingSetup = false;
@@ -70,10 +72,6 @@ client.on('ready', () => {
 // Create an event listener for messages
 client.on('message', message => {
 
-    if(message.content = 'rename') {
-        client.user.setUsername('Motivator Bot');
-    }
-
     var logMessage = (getChannel(logId) === null);
     channels = getChannels(message.guild, trackedChannelIds);
     if(logMessage && getChannel(logId) !== null) {
@@ -90,7 +88,6 @@ client.on('message', message => {
         message.channel.send(response);
     }
     else {
-        let despairFlag = false;
         for(exp of despairRegexes) {
             if(exp.test(message.content.toLowerCase())) {
                 log(message.author.username + ': ' + message.content);
@@ -101,12 +98,23 @@ client.on('message', message => {
             }
         }
     }
+
+    //TODO: Add routine to add despair triggers
+    // if(message.content.startsWith(addDespairTrigger)) {
+    //     if(message.content !== addDespairTrigger) {
+    //         phrase = message.content.slice(addDespairTrigger.length, message.content.length);
+    //
+    //     }
+    // }
+
+    //TODO: Add routine for collecting user data.
+
 });
 
 client.on('presenceUpdate', update => {
     if (update.user !== null) {
         if(update.user.presence.game !== null) {
-            const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.userId + '>! Apply to some <#' + jobsId + '>!';
+            const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.user.id + '>! Apply to some <#' + jobsId + '>!';
             log('me: ' + response);
             for (channel of [getChannel(gamesId), getChannel(jobsId)]) {
                 if (channel !== null) {

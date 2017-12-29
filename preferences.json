@@ -1,0 +1,28 @@
+{
+    "preferences": [
+        {
+            "label": "job",
+            "type": "bool",
+            "confirmation messages": {
+                "true": "Should I remember that you have a job? Please answer yes or no.",
+                "false": "Should I rememeber that you don't have a job? Please answer yes or no."
+            },
+            "change messages": {
+                "true": "Okay, I will remember that you have a job.",
+                "false": "Okay, I will remember that you don't have a job."
+            }
+        },
+        {
+            "label": "interests",
+            "type": "array",
+            "confirmation messages": {
+                "add": "You expressed that you are interested in <elem>. Should I remember this? Please answer yes or no.",
+                "remove": "You expressed that you are interested in <elem>. Should I remember this? Please answer yes or no."
+            },
+            "change messages": {
+                "add": "Okay, I will remember that you're interested in <elem>.",
+                "remove": "Okay, I will remember that you're interested in <elem>."
+            }
+        }
+    ]
+}
