@@ -76,3 +76,7 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+
+## specific to this project
+auth.json
