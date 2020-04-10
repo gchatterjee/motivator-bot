@@ -1,4 +1,4 @@
-var auth = require('./auth.json')
+const auth = require('./auth.json')
 // Import the discord.js module
 const Discord = require('discord.js')
 
@@ -18,8 +18,8 @@ const trackedChannelIds = [jobsId, gamesId, logId]
 
 // const addDespairTrigger = 'motivator-bot -d '
 
-var channels = []
-var despairRegexes = []
+let channels = []
+let despairRegexes = []
 // var loggingSetup = false
 
 // function isBot(user) {
@@ -28,27 +28,27 @@ var despairRegexes = []
 
 function loadDespairPhrases() {
     const despairPhrases = require('./despair.json')
-    var despairRegexes = []
-    for(let phrase of despairPhrases.phrases) {
+    const despairRegexes = []
+    for (const phrase of despairPhrases.phrases) {
         despairRegexes.push(new RegExp(phrase))
     }
     return despairRegexes
 }
 
 function getChannels(guild, idList) {
-    let channels = []
-    for(let id of idList) {
-        let channel = guild.channels.get(id)
-        if(channel !== undefined && channel !== null) {
-            channels.push({'id':id, 'channel':channel})
+    const channels = []
+    for (const id of idList) {
+        const channel = guild.channels.get(id)
+        if (channel !== undefined && channel !== null) {
+            channels.push({'id': id, 'channel': channel})
         }
     }
     return channels
 }
 
 function getChannel(id) {
-    for(let channel of channels) {
-        if(channel.id === id) {
+    for (const channel of channels) {
+        if (channel.id === id) {
             return channel.channel
         }
     }
@@ -70,26 +70,26 @@ client.on('ready', () => {
 })
 
 // Create an event listener for messages
-client.on('message', message => {
-
-    var logMessage = (getChannel(logId) === null)
+client.on('message', (message) => {
+    const logMessage = (getChannel(logId) === null)
     channels = getChannels(message.guild, trackedChannelIds)
-    if(logMessage && getChannel(logId) !== null) {
+    if (logMessage && getChannel(logId) !== null) {
         log('Logging initialization successful. Logging will be recorded in both local console and logging channel.')
     }
 
-    if(message.author.id === botId) { return }
+    if (message.author.id === botId) {
+        return
+    }
 
-    if((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
+    if ((message.content.toLowerCase() === 'fuck <@' + botId + '>') ||
        (message.content.toLowerCase() === 'fuck you <@' + botId + '>')) {
         log(message.author.username + ': ' + message.content)
         const response = 'Fuck you too, <@' + message.author.id + '>!'
         log('me: ' + response)
         message.channel.send(response)
-    }
-    else {
-        for(let exp of despairRegexes) {
-            if(exp.test(message.content.toLowerCase())) {
+    } else {
+        for (const exp of despairRegexes) {
+            if (exp.test(message.content.toLowerCase())) {
                 log(message.author.username + ': ' + message.content)
                 const response = 'Hi <@' + message.author.id + '>. I sense that you are in despair.'
                 log('me: ' + response)
@@ -99,7 +99,7 @@ client.on('message', message => {
         }
     }
 
-    //TODO: Add routine to add despair triggers
+    // TODO: Add routine to add despair triggers
     // if(message.content.startsWith(addDespairTrigger)) {
     //     if(message.content !== addDespairTrigger) {
     //         phrase = message.content.slice(addDespairTrigger.length, message.content.length);
@@ -107,16 +107,15 @@ client.on('message', message => {
     //     }
     // }
 
-    //TODO: Add routine for collecting user data.
-
+    // TODO: Add routine for collecting user data.
 })
 
-client.on('presenceUpdate', update => {
+client.on('presenceUpdate', (update) => {
     if (update.user !== null) {
-        if(update.user.presence.game !== null) {
+        if (update.user.presence.game !== null) {
             const response = 'Stop playing ' + update.user.presence.game.name + ', <@' + update.user.id + '>! Apply to some <#' + jobsId + '>!'
             log('me: ' + response)
-            for (let channel of [getChannel(gamesId), getChannel(jobsId)]) {
+            for (const channel of [getChannel(gamesId), getChannel(jobsId)]) {
                 if (channel !== null) {
                     channel.send(response)
                 }
