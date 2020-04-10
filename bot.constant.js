@@ -1,0 +1,13 @@
+const userIds = {
+    bot: '379491763414368261'
+}
+
+const channelIds = {
+    work: '364834807043063819',
+    games: '364835892755562496',
+    log: '380542106650804225'
+}
+
+module.exports = {
+    userIds, channelIds
+}
