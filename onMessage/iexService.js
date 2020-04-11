@@ -25,7 +25,7 @@ function createMessage(stockData) {
         bold(companyName + ' ' + '($' + symbol +')') +
         '\n'
     const latest =
-        italicize('Latest:') + '\n• $' + latestPrice + ',' + latestTime + '\n'
+        italicize('Latest:') + '\n• $' + latestPrice + ' (' + latestTime + ')\n'
     const latestDay =
         italicize('Latest Day:') +
         '\n• $' + open + ' (open)' +
@@ -35,7 +35,7 @@ function createMessage(stockData) {
     const week52 =
         italicize('52 Week Extrema:') +
         '\n• $' + week52High + ' (high)' +
-        '\n• $' + week52Low + '(low)'
+        '\n• $' + week52Low + ' (low)'
     return title + latest + latestDay + week52
 }
 
