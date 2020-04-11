@@ -80,3 +80,4 @@ typings/
 
 ## specific to this project
 auth.json
+.env
