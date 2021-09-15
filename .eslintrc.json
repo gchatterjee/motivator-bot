@@ -4,30 +4,9 @@
         "commonjs": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["airbnb/base", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018
-    },
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
     }
 }
